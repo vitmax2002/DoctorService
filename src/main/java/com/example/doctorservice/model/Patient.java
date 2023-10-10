@@ -1,14 +1,17 @@
 package com.example.doctorservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "patient")
-public class Patient {
+public class Patient{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,30 +38,41 @@ public class Patient {
     @PastOrPresent
     private LocalDate modifyDate;
 
+    @OneToMany(mappedBy = "patient",cascade = CascadeType.ALL)
+    private List<Medication> medications;
 
+
+    @JsonIgnore
     @AssertFalse(message = "You should have 18 years")
     public boolean isUnderage() {
         LocalDate eighteenYearsAgo = LocalDate.now().minusYears(18);
         return dateOfBirth.isAfter(eighteenYearsAgo);
    }
 
-
-
     public Patient() {
     }
 
-    public Patient(String firstName, String lastName, @NotNull Gender gender, @NotNull LocalDate dateOfBirth, LocalDate creationDate, LocalDate modifyDate) {
+    public Patient(String firstName, String lastName, @NotNull Gender gender, @NotNull LocalDate dateOfBirth, LocalDate creationDate, LocalDate modifyDate, List<Medication> medications) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
         this.dateOfBirth = dateOfBirth;
         this.creationDate = creationDate;
         this.modifyDate = modifyDate;
+        this.medications = medications;
     }
-
 
     public Long getPatientId() {
         return patientId;
+    }
+
+
+    public List<Medication> getMedications() {
+        return medications;
+    }
+
+    public void setMedications(List<Medication> medications) {
+        this.medications = medications;
     }
 
     public void setPatientId(Long patientId) {
@@ -118,12 +132,12 @@ public class Patient {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Patient patient = (Patient) o;
-        return Objects.equals(patientId, patient.patientId) && Objects.equals(firstName, patient.firstName) && Objects.equals(lastName, patient.lastName) && gender == patient.gender && Objects.equals(dateOfBirth, patient.dateOfBirth) && Objects.equals(creationDate, patient.creationDate) && Objects.equals(modifyDate, patient.modifyDate);
+        return Objects.equals(patientId, patient.patientId) && Objects.equals(firstName, patient.firstName) && Objects.equals(lastName, patient.lastName) && gender == patient.gender && Objects.equals(dateOfBirth, patient.dateOfBirth) && Objects.equals(creationDate, patient.creationDate) && Objects.equals(modifyDate, patient.modifyDate) && Objects.equals(medications, patient.medications);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(patientId, firstName, lastName, gender, dateOfBirth, creationDate, modifyDate);
+        return Objects.hash(patientId, firstName, lastName, gender, dateOfBirth, creationDate, modifyDate, medications);
     }
 
     @Override
@@ -136,6 +150,7 @@ public class Patient {
                 ", dateOfBirth=" + dateOfBirth +
                 ", creationDate=" + creationDate +
                 ", modifyDate=" + modifyDate +
+                ", medications=" + medications +
                 '}';
     }
 }

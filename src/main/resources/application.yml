@@ -1,5 +1,11 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1
 
 spring:
+  application:
+    name: DoctorService
 
   datasource:
     url: jdbc:postgresql://localhost:5432/medicine

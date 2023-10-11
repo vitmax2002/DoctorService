@@ -121,8 +121,7 @@ public class PatientService {
             medication.setPatient(null);
             medicationRepository.deleteMedication(medicationId);
         }
-        //else throw new NoSuchElementException("Medicamentul cu indexul "+medicationId +" nu apartine lui Patient cu indexul:"+patientId);
-        //medicationRepository.delete(medication);
+        else throw new NoSuchElementException("Medicamentul cu indexul "+medicationId +" nu apartine lui Patient cu indexul:"+patientId);
     }
 
     public List<Medication> viewListofMedicationsFromPatient(Long id){

@@ -1,6 +1,7 @@
 package com.example.doctorservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
@@ -60,6 +61,7 @@ public class Medication {
         return patient;
     }
 
+    @JsonProperty
     public void setPatient(Patient patient) {
         this.patient = patient;
     }

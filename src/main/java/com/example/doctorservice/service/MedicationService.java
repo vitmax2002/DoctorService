@@ -4,6 +4,8 @@ import com.example.doctorservice.model.Medication;
 import com.example.doctorservice.repository.MedicationRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class MedicationService {
 
@@ -13,8 +15,8 @@ public class MedicationService {
         this.medicationRepository = medicationRepository;
     }
 
-    public Medication addMedication(Medication medication){
-        Medication createdMedication= medicationRepository.save(medication);
-        return createdMedication;
+    public List<Medication> getMedication(){
+        List<Medication> medications= medicationRepository.findAll();
+        return medications;
     }
 }

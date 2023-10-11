@@ -76,8 +76,8 @@ public class PatientController {
    }
 
    @DeleteMapping("medication/delete/{patientId}/{medicationId}")
-    public ResponseEntity<Patient> deleteOneMedication(@PathVariable(name = "patientId") Long patientId,@PathVariable(name = "medicationId") Long medicationId){
-        Patient patient=patientService.deleteOneMedication(patientId,medicationId);
-        return ResponseEntity.ok().body(patient);
+    public ResponseEntity<Void> deleteOneMedication(@PathVariable(name = "patientId") Long patientId,@PathVariable(name = "medicationId") Long medicationId){
+        patientService.deleteOneMedication(patientId,medicationId);
+        return ResponseEntity.noContent().build();
    }
 }

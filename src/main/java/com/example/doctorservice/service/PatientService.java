@@ -8,11 +8,13 @@ import com.example.doctorservice.repository.MedicationRepository;
 import com.example.doctorservice.repository.PatientRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 @Service
 public class PatientService {
@@ -110,14 +112,17 @@ public class PatientService {
         return patient;
     }
 
-    public Patient deleteOneMedication(Long patientId, Long medicationId){
+
+    @Transactional
+    public void deleteOneMedication(Long patientId, Long medicationId){
         Patient patient =findById(patientId);
         Medication medication=medicationRepository.findById(medicationId).orElseThrow(()->new NoSuchElementException("Nu exista medicament cu id:"+medicationId));
         if(patient.getMedications().contains(medication)){
-            medicationRepository.delete(medication);
+            medication.setPatient(null);
+            medicationRepository.deleteMedication(medicationId);
         }
-        else throw new NoSuchElementException("Medicamentul cu indexul "+medicationId +" nu apartine lui Patient cu indexul:"+patientId);
-        return patient;
+        //else throw new NoSuchElementException("Medicamentul cu indexul "+medicationId +" nu apartine lui Patient cu indexul:"+patientId);
+        //medicationRepository.delete(medication);
     }
 
     public List<Medication> viewListofMedicationsFromPatient(Long id){
